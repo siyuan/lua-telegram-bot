@@ -21,6 +21,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 ]]
 
+package.path = '/usr/lib64/lua/luarocks/share/lua/5.1/?.lua;' .. package.path
+package.path = '/usr/share/lua/5.1/luarocks/?.lua;' .. package.path
+package.cpath = '/usr/lib64/lua/luarocks/lib/lua/5.1/?.so;' .. package.cpath
 -- Import Libraries
 local https = require("ssl.https")
 local ltn12 = require("ltn12")
