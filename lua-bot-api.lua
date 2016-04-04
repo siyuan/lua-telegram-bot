@@ -43,6 +43,7 @@ function JSON:onDecodeError(message, text, location, etc)
   print((os.date("%x %X")), "Error while decoding JSON:\n", message)
 end
 
+--[[
 function JSON:onDecodeOfHTMLError(message, text, nil, etc)
   if text then
     if location then
@@ -64,6 +65,7 @@ function JSON:onDecodeOfNilError(message, nil, nil, etc)
   end
   print((os.date("%x %X")), "Error while decoding JSON [nil]:\n", message)
 end
+--]]
 
 function JSON:onEncodeError(message, etc)
   print((os.date("%x %X")), "Error while encoding JSON:\n", message)
