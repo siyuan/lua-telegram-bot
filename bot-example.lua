@@ -29,14 +29,17 @@ local bot, extension = require("lua-bot-api").configure(token)
 -- override onMessageReceive function so it does what we want
 extension.onMessageReceive = function (msg)
 	print("New Message by " .. msg.from.first_name)
+	markup = bot.generateReplyKeyboardMarkup({{"Caaaat"}, {"dog"}}, true, true, true)
+	print(markup)
 	words = {}
 	for word in msg.text:gmatch("%S+") do table.insert(words, word) end
 	if (words[1] == "/print") then
 		if (words[2]) then
-			bot.sendMessage(msg.from.id, words[2])
+			bot.sendMessage(msg.from.id, words[2], nil, nil, nil, nil, markup)
 		else
 			bot.sendMessage(msg.from.id, "format /print msg")
 		end
+		return
 	end
 
 	if (msg.text == "/start") then
@@ -44,7 +47,7 @@ extension.onMessageReceive = function (msg)
 	elseif (msg.text == "ping") then
 		bot.sendMessage(msg.chat.id, "pong!")
 	elseif (msg.text == "/helloworld") then
-		bot.sendMessage(msg.chat.id, "Hello Wooooooorld!")
+		bot.sendMessage(msg.chat.id, "么么哒!")
 	else
 		bot.sendMessage(msg.chat.id, "I am just an example, running on the Lua Telegram Framework written with ❤️ by @cosmonawt")
 	end
