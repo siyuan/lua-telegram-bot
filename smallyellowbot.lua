@@ -26,26 +26,19 @@ local token = arg[1] or "134452794:AAFmTkfgaLU58OJh7hxL3tMytcBB5A0cKpo"
 -- create and configure new bot with set token
 local bot, extension = require("lua-bot-api").configure(token)
 
-cmdlist = {["/print"] = 0,}
 -- override onMessageReceive function so it does what we want
 extension.onMessageReceive = function (msg)
 	print("New Message by " .. msg.from.first_name)
 	words = {}
 	for word in msg.text:gmatch("%S+") do table.insert(words, word) end
-	if(cmdlist["/print"] ==1 ) then
-		bot.sendMessage(msg.from.id, msg.text)
-		cmdlist["/print"] = 0
-		return
-	end
 	if (words[1] == "/print") then
 		if (words[2]) then
-			bot.sendMessage(msg.from.id, words[2])
+			bot.sendMessage(msg.chat.id, words[2])
 		else
-			bot.sendMessage(msg.from.id, "你想说啥")
-			cmdlist["/print"] = 1
+			bot.sendMessage(msg.chat.id, "你想说啥")
 		end
 	else
-		bot.sendMessage(msg.from.id, "不知道你在说什么")
+		bot.sendMessage(msg.chat.id, "不知道你在说什么")
 	end
 end
 
