@@ -26,19 +26,35 @@ local token = arg[1] or "134452794:AAFmTkfgaLU58OJh7hxL3tMytcBB5A0cKpo"
 -- create and configure new bot with set token
 local bot, extension = require("lua-bot-api").configure(token)
 
+lastcmd = {}
 -- override onMessageReceive function so it does what we want
 extension.onMessageReceive = function (msg)
 	print("New Message by " .. msg.from.first_name)
-	words = {}
-	for word in msg.text:gmatch("%S+") do table.insert(words, word) end
-	if (words[1] == "/print") then
-		if (words[2]) then
-			bot.sendMessage(msg.chat.id, words[2])
+	cmd = {}
+	if (lastcmd[msg.from.id]) then
+		cmd[1] = lastcmd[msg.from.id]
+		cmd[2] = msg.text
+		--table.remove(lastcmd, msg.from.id)
+		lastcmd[msg.from.id] = nil
+	else
+		for word in msg.text:gmatch("%S+") do table.insert(cmd, word) end
+	end
+
+	replayname = (msg.from.username and ("@" .. msg.from.username .. " ") or msg.from.first_name)
+
+	if (cmd[1] == "/print") then
+		if (cmd[2]) then
+			bot.sendMessage(msg.chat.id,
+			replayname .. "说" .. cmd[2], nil, nil, nil, nil, nil)
 		else
-			bot.sendMessage(msg.chat.id, "你想说啥")
+			lastcmd[msg.from.id] = "/print"
+			forcereply = bot.generateForceReply(true, true)
+			bot.sendMessage(msg.chat.id, 
+			replayname .. "你想说啥", nil, nil, nil, 
+			msg.message_id, forcereply)
 		end
 	else
-		bot.sendMessage(msg.chat.id, "不知道你在说什么")
+		bot.sendMessage(msg.chat.id, "不知道" .. replayname ..  "在说什么")
 	end
 end
 
