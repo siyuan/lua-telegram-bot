@@ -33,6 +33,7 @@ local bot, extension = require("lua-bot-api").configure(token)
 
 local lastCmd = {}
 local forceReply = bot.generateForceReply(true, true)
+local replyKeyboardHide = bot.generateReplyKeyboardHide(true, false)
 
 function letterNumberUnderscore(str)
   words = {}
@@ -48,7 +49,7 @@ extension.onMessageReceive = function (msg)
   cmd = {}
 
   if(msg.from.username and lastCmd[msg.from.username]) then
-    print("mmmmmmmmmmmmm " .. lastCmd[msg.from.username])
+    bot.sendMessage(msg.chat.id, "么么哒成功", nil, nil, nil, nil, replyKeyboardHide)
     lastCmd["@" .. msg.from.username] = nil
     return
   elseif (lastCmd[msg.from.id]) then
